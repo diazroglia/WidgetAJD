@@ -1,0 +1,33 @@
+# Inicializar Git
+git init
+
+# Configurar rama principal
+git branch -M main
+
+# Agregar todos los archivos
+git add .
+
+# Crear commit
+git commit -m "Primer commit"
+
+# Asociar repositorio remoto
+git remote add origin https://github.com/TU_USUARIO/TU_REPO.git
+
+# Verificar remoto
+git remote -v
+
+# Subir por primera vez
+git push -u origin main
+
+Si ya existe un remoto y quieres cambiarlo:
+
+git remote remove origin
+git remote add origin https://github.com/TU_USUARIO/TU_REPO.git
+git push -u origin main
+
+Para el día a día después de eso:
+
+git add .
+git commit -m "Descripción del cambio"
+git push
+

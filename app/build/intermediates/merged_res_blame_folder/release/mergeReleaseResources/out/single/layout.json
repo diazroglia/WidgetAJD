@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "com.example.weatherwidget.app-mergeReleaseResources-32:/layout/widget_weather.xml",
+        "source": "com.example.weatherwidget.app-main-34:/layout/widget_weather.xml"
+    },
+    {
+        "merged": "com.example.weatherwidget.app-mergeReleaseResources-32:/layout/activity_main.xml",
+        "source": "com.example.weatherwidget.app-main-34:/layout/activity_main.xml"
+    }
+]
