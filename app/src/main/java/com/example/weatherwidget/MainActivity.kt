@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun actualizarUbicacion() {
         val statusText = findViewById<TextView>(R.id.status_text)
-        statusText.text = "Obteniendo ubicación..."
+        statusText.text = getString(R.string.obtaining_location)
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
             == PackageManager.PERMISSION_GRANTED) {
             

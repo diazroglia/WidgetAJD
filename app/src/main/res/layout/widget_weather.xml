@@ -6,21 +6,45 @@
     android:background="@drawable/widget_background"
     android:padding="16dp">
 
+    <ImageView
+        android:id="@+id/refresh_button"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="Refresh"
+        android:src="@android:drawable/ic_popup_sync"
+        android:tint="@android:color/white" />
+
     <LinearLayout
         android:id="@+id/weather_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
         android:baselineAligned="false">
 
-        <!-- Left Side: Date and Forecast -->
+        <!-- Left Side: Clock, Date and Forecast -->
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center_vertical|start"
+            android:gravity="top|start"
             android:orientation="vertical">
+
+            <TextClock
+                android:id="@+id/clock_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:format12Hour="h:mm"
+                android:format24Hour="HH:mm"
+                android:gravity="start"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:text="--:--"
+                android:textColor="@android:color/white"
+                android:textSize="54sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/date_text"
@@ -28,9 +52,8 @@
                 android:layout_height="wrap_content"
                 android:text="viernes, 28 nov"
                 android:textColor="@android:color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-                
+                android:textSize="16sp" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -71,7 +94,7 @@
         <!-- Right Side: Weather -->
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical|end"
             android:orientation="vertical">
@@ -153,15 +176,5 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/refresh_button"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:src="@android:drawable/ic_popup_sync"
-        android:contentDescription="Refresh"
-        android:tint="@android:color/white" />
 
 </RelativeLayout>

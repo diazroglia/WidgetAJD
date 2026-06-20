@@ -42,4 +42,12 @@
     <string name="weather_hail">Granizo</string>
     <string name="weather_thunderstorm">Tormenta</string>
     <string name="weather_unknown">Desconocido</string>
+
+    <!-- Widget error states -->
+    <string name="widget_empty_temp">--</string>
+    <string name="widget_empty_min">Min: --</string>
+    <string name="widget_empty_max">Max: --</string>
+
+    <!-- Obtaining location string -->
+    <string name="obtaining_location">Obteniendo ubicación…</string>
 </resources>

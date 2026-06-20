@@ -70,41 +70,37 @@ object LocationHelper {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    // Save location to SharedPreferences for widget use
+    // Save location using String to preserve full Double precision (~15 digits)
     fun saveLocation(context: Context, latitude: Double, longitude: Double, cityName: String) {
         val prefs = context.getSharedPreferences("weather_prefs", Context.MODE_PRIVATE)
         prefs.edit().apply {
-            putFloat("latitude", latitude.toFloat())
-            putFloat("longitude", longitude.toFloat())
+            putString("latitude", latitude.toString())
+            putString("longitude", longitude.toString())
             putString("city_name", cityName)
             apply()
         }
     }
 
-    // Get saved location from SharedPreferences
+    // Get saved location with full Double precision
     fun getSavedLocation(context: Context): Triple<Double, Double, String>? {
         val prefs = context.getSharedPreferences("weather_prefs", Context.MODE_PRIVATE)
-        
-        try {
-            if (!prefs.contains("latitude") || !prefs.contains("longitude")) {
-                return null
-            }
-            
-            val lat = prefs.getFloat("latitude", 0.0f).toDouble()
-            val lon = prefs.getFloat("longitude", 0.0f).toDouble()
+
+        return try {
+            val latStr = prefs.getString("latitude", null)
+            val lonStr = prefs.getString("longitude", null)
             val city = prefs.getString("city_name", null)
 
-            return if (city != null) {
-                Triple(lat, lon, city)
+            if (latStr != null && lonStr != null && city != null) {
+                Triple(latStr.toDouble(), lonStr.toDouble(), city)
             } else {
                 null
             }
-        } catch (e: ClassCastException) {
-            // Legacy data might be String, clear it so it gets refreshed
+        } catch (e: NumberFormatException) {
+            // Legacy Float data detected, clear it so it gets refreshed
             prefs.edit().clear().apply()
-            return null
+            null
         } catch (e: Exception) {
-            return null
+            null
         }
     }
 

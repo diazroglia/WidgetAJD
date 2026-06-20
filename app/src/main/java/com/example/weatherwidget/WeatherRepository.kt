@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object WeatherRepository {
     private const val BASE_URL = "https://api.tomorrow.io/"
-    private const val API_KEY = "bVnE3WhwiBzYwhEmqRlwWnKmlJIEZBe3"
+    private val API_KEY = BuildConfig.TOMORROW_API_KEY
 
     private val api: WeatherApi by lazy {
         Retrofit.Builder()
