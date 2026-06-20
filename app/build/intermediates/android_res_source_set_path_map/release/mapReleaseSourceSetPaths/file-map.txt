@@ -1,9 +1,0 @@
-com.example.weatherwidget.app-pngs-0 D:\Antigravity\app\build\generated\res\pngs\release
-com.example.weatherwidget.app-resValues-1 D:\Antigravity\app\build\generated\res\resValues\release
-com.example.weatherwidget.app-updated_navigation_xml-2 D:\Antigravity\app\build\generated\updated_navigation_xml\release
-com.example.weatherwidget.app-packageReleaseResources-3 D:\Antigravity\app\build\intermediates\incremental\release\packageReleaseResources\merged.dir
-com.example.weatherwidget.app-packageReleaseResources-4 D:\Antigravity\app\build\intermediates\incremental\release\packageReleaseResources\stripped.dir
-com.example.weatherwidget.app-release-5 D:\Antigravity\app\build\intermediates\merged_res\release\mergeReleaseResources
-com.example.weatherwidget.app-main-6 D:\Antigravity\app\src\main\res
-com.example.weatherwidget.app-release-7 D:\Antigravity\app\src\release\res
-gradleHome-0 C:\Users\ad194925\.gradle
