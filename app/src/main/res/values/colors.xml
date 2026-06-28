@@ -3,4 +3,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="transparent_bg">#40000000</color>
+    <color name="widget_text_primary">#FFFFFFFF</color>
+    <color name="widget_text_secondary">#F2FFFFFF</color>
+    <color name="widget_text_tertiary">#DDFFFFFF</color>
+    <color name="widget_text_shadow">#99000000</color>
+    <color name="widget_icon_tint">#F4FFFFFF</color>
 </resources>

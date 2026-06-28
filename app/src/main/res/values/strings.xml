@@ -25,6 +25,7 @@
     <string name="main_btn_allow_location">Permitir Ubicación</string>
     <string name="main_btn_update_location">Actualizar Ubicación</string>
     <string name="main_instructions">Después de permitir la ubicación, agrega el widget a tu pantalla de inicio.</string>
+    <string name="main_version_format">Versión %1$s (%2$d)</string>
 
     <!-- Weather Descriptions -->
     <string name="weather_clear_sky">Cielo despejado</string>

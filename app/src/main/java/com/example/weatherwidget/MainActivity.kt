@@ -22,6 +22,12 @@ class MainActivity : AppCompatActivity() {
         val permisoBtn = findViewById<Button>(R.id.request_permission_button)
         val actualizarBtn = findViewById<Button>(R.id.update_location_button)
         val statusText = findViewById<TextView>(R.id.status_text)
+        val versionText = findViewById<TextView>(R.id.version_text)
+        versionText.text = getString(
+            R.string.main_version_format,
+            BuildConfig.VERSION_NAME,
+            BuildConfig.VERSION_CODE
+        )
 
         permisoBtn.setOnClickListener {
             pedirPermisoUbicacion()
