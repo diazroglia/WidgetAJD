@@ -190,17 +190,17 @@ class WeatherWidget : AppWidgetProvider() {
                 cal.add(Calendar.DAY_OF_YEAR, 1)
                 val d1Name = daysArr[cal.get(Calendar.DAY_OF_WEEK) - 1]
                 val emoji1 = getWeatherEmoji(weatherData.daily.weatherCode.getOrNull(1) ?: 0)
-                val f1 = "$d1Name\n$emoji1\n${weatherData.daily.minTemp.getOrNull(1)?.toInt() ?: 0}°/${weatherData.daily.maxTemp.getOrNull(1)?.toInt() ?: 0}°"
+                val f1 = "$d1Name\n$emoji1\n${formatForecastTemp(weatherData, 1)}"
 
                 cal.add(Calendar.DAY_OF_YEAR, 1)
                 val d2Name = daysArr[cal.get(Calendar.DAY_OF_WEEK) - 1]
                 val emoji2 = getWeatherEmoji(weatherData.daily.weatherCode.getOrNull(2) ?: 0)
-                val f2 = "$d2Name\n$emoji2\n${weatherData.daily.minTemp.getOrNull(2)?.toInt() ?: 0}°/${weatherData.daily.maxTemp.getOrNull(2)?.toInt() ?: 0}°"
+                val f2 = "$d2Name\n$emoji2\n${formatForecastTemp(weatherData, 2)}"
 
                 cal.add(Calendar.DAY_OF_YEAR, 1)
                 val d3Name = daysArr[cal.get(Calendar.DAY_OF_WEEK) - 1]
                 val emoji3 = getWeatherEmoji(weatherData.daily.weatherCode.getOrNull(3) ?: 0)
-                val f3 = "$d3Name\n$emoji3\n${weatherData.daily.minTemp.getOrNull(3)?.toInt() ?: 0}°/${weatherData.daily.maxTemp.getOrNull(3)?.toInt() ?: 0}°"
+                val f3 = "$d3Name\n$emoji3\n${formatForecastTemp(weatherData, 3)}"
 
                 views.setTextViewText(R.id.forecast_day1_text, f1)
                 views.setTextViewText(R.id.forecast_day2_text, f2)
@@ -221,6 +221,12 @@ class WeatherWidget : AppWidgetProvider() {
             }
         }
 
+        private fun formatForecastTemp(weatherData: WeatherResponse, dayIndex: Int): String {
+            val minTemp = weatherData.daily.minTemp.getOrNull(dayIndex)?.toInt() ?: 0
+            val maxTemp = weatherData.daily.maxTemp.getOrNull(dayIndex)?.toInt() ?: 0
+            return "$minTemp°/\u2060$maxTemp°"
+        }
+
         private fun applyCachedWeather(
             context: Context,
             views: RemoteViews,
@@ -239,9 +245,13 @@ class WeatherWidget : AppWidgetProvider() {
             )
             views.setTextViewText(R.id.min_temp_text, context.getString(R.string.min_temp_format, cachedWeather.minTemp))
             views.setTextViewText(R.id.max_temp_text, context.getString(R.string.max_temp_format, cachedWeather.maxTemp))
-            views.setTextViewText(R.id.forecast_day1_text, cachedWeather.f1)
-            views.setTextViewText(R.id.forecast_day2_text, cachedWeather.f2)
-            views.setTextViewText(R.id.forecast_day3_text, cachedWeather.f3)
+            views.setTextViewText(R.id.forecast_day1_text, preventForecastWrap(cachedWeather.f1))
+            views.setTextViewText(R.id.forecast_day2_text, preventForecastWrap(cachedWeather.f2))
+            views.setTextViewText(R.id.forecast_day3_text, preventForecastWrap(cachedWeather.f3))
+        }
+
+        private fun preventForecastWrap(value: String): String {
+            return value.replace("°/", "°/\u2060")
         }
 
         private fun getWeatherDescription(context: Context, code: Int): String {
