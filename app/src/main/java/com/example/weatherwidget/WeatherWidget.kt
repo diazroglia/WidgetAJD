@@ -37,7 +37,6 @@ class WeatherWidget : AppWidgetProvider() {
                 WeatherUpdateWorker.enqueueImmediateUpdate(context, replaceExisting = true)
             }
 
-            Intent.ACTION_USER_PRESENT,
             Intent.ACTION_MY_PACKAGE_REPLACED -> {
                 WeatherUpdateWorker.schedulePeriodicUpdates(context)
                 WeatherUpdateWorker.enqueueImmediateUpdate(context)

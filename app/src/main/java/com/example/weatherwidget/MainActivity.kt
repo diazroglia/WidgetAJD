@@ -2,6 +2,7 @@ package com.example.weatherwidget
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -60,7 +61,26 @@ class MainActivity : AppCompatActivity() {
         } else {
             findViewById<TextView>(R.id.status_text).text = getString(R.string.permission_granted)
             findViewById<Button>(R.id.update_location_button).isEnabled = true
+            pedirUbicacionEnSegundoPlano()
         }
+    }
+
+    // The widget refreshes from a background worker, which only gets a fresh location
+    // with ACCESS_BACKGROUND_LOCATION; without it, it keeps showing the last saved city.
+    private fun tieneUbicacionEnSegundoPlano(): Boolean {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.Q ||
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) ==
+            PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun pedirUbicacionEnSegundoPlano() {
+        if (tieneUbicacionEnSegundoPlano()) return
+        findViewById<TextView>(R.id.status_text).text = getString(R.string.background_location_needed)
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION),
+            101
+        )
     }
 
     override fun onRequestPermissionsResult(
@@ -75,16 +95,24 @@ class MainActivity : AppCompatActivity() {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 statusText.text = getString(R.string.permission_granted)
                 actualizarBtn.isEnabled = true
+                pedirUbicacionEnSegundoPlano()
             } else {
                 statusText.text = getString(R.string.permission_denied)
                 actualizarBtn.isEnabled = false
             }
+        } else if (requestCode == 101) {
+            actualizarEstado(statusText)
         }
     }
 
     private fun actualizarEstado(statusText: TextView) {
-        val estado = if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-            == PackageManager.PERMISSION_GRANTED) {
+        val tienePermiso = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
+            PackageManager.PERMISSION_GRANTED
+        if (tienePermiso && !tieneUbicacionEnSegundoPlano()) {
+            statusText.text = getString(R.string.background_location_needed)
+            return
+        }
+        val estado = if (tienePermiso) {
             getString(R.string.permission_granted)
         } else {
             getString(R.string.waiting_permissions)

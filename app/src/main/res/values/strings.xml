@@ -9,6 +9,7 @@
     <string name="location_updated">Ubicación actualizada: %1$s</string>
     <string name="location_error">No se pudo obtener la ubicación</string>
     <string name="location_permission_not_granted">Permiso de ubicación no concedido</string>
+    <string name="background_location_needed">Para que el widget detecte cuando cambiás de ciudad, elegí \"Permitir todo el tiempo\" en el permiso de ubicación.</string>
     <string name="default_location_name">Ubicación Actual</string>
     <string name="my_location">Mi Ubicación</string>
     <string name="fallback_city">Montevideo</string>
