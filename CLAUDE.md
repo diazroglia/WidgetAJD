@@ -29,7 +29,9 @@ Flujo de actualización (todo el trabajo de red y ubicación corre en WorkManage
    - consulta `WeatherRepository` y vuelve a pintar; ante excepción, repinta desde caché o muestra el estado de error.
 3. `WeatherRepository` llama a `/v4/timelines` con `timesteps=current,1d` y mapea `TomorrowResponse` → `WeatherResponse` (modelo interno). La sensación térmica **no** viene de la API: se calcula con la fórmula BOM (temperatura, humedad, viento).
 
-`MainActivity` solo pide permiso de ubicación y guarda lat/lon/ciudad; el widget lee esa ubicación como respaldo.
+`MainActivity` pide permiso de ubicación, guarda lat/lon/ciudad (el widget la usa como respaldo) y encola un refresco del widget.
+
+Cada ubicación fresca que obtiene el widget re-centra una geocerca de 2 km (`LocationChangeGeofence`); al salir de ella, Play Services despierta `GeofenceExitReceiver` aunque el proceso esté muerto y se encola un refresco. Es el disparador confiable de "cambié de ciudad".
 
 ### Detalles no obvios
 
@@ -38,7 +40,9 @@ Flujo de actualización (todo el trabajo de red y ubicación corre en WorkManage
 - Los pronósticos usan `\u2060` (word joiner) después de `°/` para que el rango de temperaturas no se parta en dos líneas; `preventForecastWrap` lo aplica también a cachés viejas.
 - Los códigos de clima de Tomorrow.io se mapean dos veces en `WeatherWidget` (`getWeatherDescription` y `getWeatherEmoji`): un código nuevo va en ambas.
 - El worker corre en segundo plano: sin `ACCESS_BACKGROUND_LOCATION` ("Permitir todo el tiempo") la ubicación vuelve `null` y el widget se queda con la ciudad guardada. Justo después de salir de la app Android todavía la permite unos segundos, así que al probar esperá ~30 s antes de disparar el refresco.
-- El refresco al desbloquear (`WeatherWidgetApp`) es de mejor esfuerzo: `USER_PRESENT` no llega a receivers del manifest y, con el proceso cacheado, Android 14+ lo posterga. El camino confiable es el worker periódico.
+- El refresco al desbloquear (`WeatherWidgetApp`) es de mejor esfuerzo: `USER_PRESENT` no llega a receivers del manifest y, con el proceso cacheado, Android 14+ lo posterga; si el proceso murió, no hay receiver.
+- En Samsung (probado en S23 Ultra), con batería "Optimizada" el congelador de Samsung (`FreecessController`/OLAF en logcat) posterga el worker periódico durante horas: se vio un hueco de 15 h sin ejecuciones. Con batería "Sin restricciones" (la app aparece en `dumpsys deviceidle whitelist`) mejora; la geocerca cubre el cambio de ciudad igual.
+- El `applicationId` es `com.antigravity.weatherwidget` (distinto del namespace `com.example.weatherwidget`): usalo en `adb`/`dumpsys`. Para ver la geocerca: `dumpsys activity service com.google.android.gms/com.google.android.location.internal.GoogleLocationManagerService | grep -A1 antigravity | grep GeofenceRequest`.
 - El widget usa `RemoteViews`: el layout `widget_weather.xml` solo admite vistas compatibles con RemoteViews.
 
 ## Scripts sueltos en la raíz

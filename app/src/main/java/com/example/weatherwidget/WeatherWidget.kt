@@ -112,6 +112,7 @@ class WeatherWidget : AppWidgetProvider() {
                     val city = LocationHelper.getCityName(context, lat, lon)
                         ?: context.getString(R.string.my_location)
                     LocationHelper.saveLocation(context, lat, lon, city)
+                    LocationChangeGeofence.register(context, lat, lon)
                     Triple(lat, lon, city)
                 } else {
                     LocationHelper.getSavedLocation(context)

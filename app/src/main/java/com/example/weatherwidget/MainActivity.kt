@@ -148,6 +148,7 @@ class MainActivity : AppCompatActivity() {
                             cityName
                         )
                         statusText.text = getString(R.string.location_updated, cityName)
+                        refrescarWidget()
                     } else {
                         // Fallback: try lastLocation directly (instantaneous)
                         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@MainActivity)
@@ -166,6 +167,7 @@ class MainActivity : AppCompatActivity() {
                                     cityName
                                 )
                                 statusText.text = getString(R.string.location_updated, cityName)
+                                refrescarWidget()
                             } else {
                                 statusText.text = getString(R.string.location_error)
                             }
@@ -180,5 +182,12 @@ class MainActivity : AppCompatActivity() {
         } else {
             statusText.text = getString(R.string.location_permission_not_granted)
         }
+    }
+
+    // Saving the location alone does not repaint the widget; it would keep the old city
+    // until the next periodic run, which Samsung can defer for hours.
+    private fun refrescarWidget() {
+        WeatherUpdateWorker.schedulePeriodicUpdates(this)
+        WeatherUpdateWorker.enqueueImmediateUpdate(this, replaceExisting = true)
     }
 }
